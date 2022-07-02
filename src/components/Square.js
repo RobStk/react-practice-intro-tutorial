@@ -12,7 +12,6 @@ class Square extends React.Component {
     // ========================================
 
     handleClick() {
-        console.log("Kliknięto w przycisk ", this);
         this.props.onClick();
     }
 }

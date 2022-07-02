@@ -34,6 +34,18 @@ class Game extends React.Component {
 
         const status = winner ? "Zwycięża gracz " + winner : "Aktualny gracz: " + player;
 
+        const moves = this.movesHistory.map(
+            (moveProps, i) => {
+                const move = i + 1;
+                const txt = "Przejdź do ruchu " + (move);
+                return (
+                    <li key={i}>
+                        <button onClick={() => { this.jumpTo(move) }}>{txt}</button>
+                    </li>
+                )
+            }
+        )
+
         return (
             <div className="game">
                 <div className="game-board">
@@ -41,7 +53,7 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <ol>{/* TODO */}</ol>
+                    <ol>{moves}</ol>
                 </div>
             </div>
         );
@@ -75,6 +87,7 @@ class Game extends React.Component {
     // ========================================
 
     makeMove(squareIndex) {
+        this.movesHistory = this.movesHistory.slice(0, this.movesDone + 1);
         const current = { ...this.movesHistory[this.movesDone] };
         const currentSquares = { ...current.squares };
         current.squares = currentSquares;
@@ -119,6 +132,17 @@ class Game extends React.Component {
         player = this.firstPlayer;
         if (this.movesDone % 2) player = this.secondPlayer;
         this.movesHistory[this.movesDone].currentPlayer = player;
+    }
+
+    // ========================================
+
+    jumpTo(move) {
+        this.movesDone = move - 1;
+        this.setState(
+            {
+                movesDone: this.movesDone
+            }
+        )
     }
 }
 
